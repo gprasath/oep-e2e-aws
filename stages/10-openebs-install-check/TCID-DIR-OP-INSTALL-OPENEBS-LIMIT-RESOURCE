@@ -52,11 +52,55 @@ clustername=$(cat ~/.kube/$CLUSTER)
 #     ansible-playbook create-ebs-volume.yml -vv --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local device_name=/dev/sd$chr"
 #     let COUNTER=COUNTER+1
 
+echo '#### DISK 1 ####'
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+echo '#### DISK 2 ####'
+
 sed -i 's/device_name: \/dev\/xvdb/device_name: \/dev\/xvdc/g' vars.yml
 
 ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
 
+echo '#### DISK 3 ####'
+
 sed -i 's/device_name: \/dev\/xvdc/device_name: \/dev\/xvdd/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+echo '#### DISK 4 ####'
+
+sed -i 's/device_name: \/dev\/xvdd/device_name: \/dev\/xvde/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+echo '#### DISK 5 ####'
+
+sed -i 's/device_name: \/dev\/xvde/device_name: \/dev\/xvdf/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+echo '#### DISK 6 ####'
+
+sed -i 's/device_name: \/dev\/xvdf/device_name: \/dev\/xvdg/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+echo '#### DISK 7 ####'
+
+sed -i 's/device_name: \/dev\/xvdg/device_name: \/dev\/xvdh/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+echo '#### DISK 8 ####'
+
+sed -i 's/device_name: \/dev\/xvdh/device_name: \/dev\/xvdi/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+echo '#### DISK 9 ####'
+
+sed -i 's/device_name: \/dev\/xvdi/device_name: \/dev\/xvdj/g' vars.yml
 
 ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
 
