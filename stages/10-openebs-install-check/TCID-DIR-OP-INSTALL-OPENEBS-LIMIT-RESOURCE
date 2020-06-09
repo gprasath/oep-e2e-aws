@@ -27,7 +27,7 @@ echo "********** Check Filesystem state **********"
 }
 
 ## volumes
-COUNTER=0
+COUNTER=1
 echo '#### AWS CONFIG ####'
 mkdir -p ~/.aws
 cp $AWS_CREDS ~/.aws/credentials
@@ -43,8 +43,10 @@ sed 's|zone: eu-west-2a|zone: us-west-2a|' -i ./vars.yml
 sed 's|volume_size: 50|volume_size: 20|' -i ./vars.yml
 clustername=$(cat ~/.kube/$CLUSTER)
 chars=( {f..p} )
+cat vars.yml
+NEWNUMBEROFVOLUMES=NUMBEROFVOLUMES+1
 
-while [  $COUNTER -lt "$NUMBEROFVOLUMES" ]; do
+while [  $COUNTER -lt "$NEWNUMBEROFVOLUMES" ]; do
     chr="${chars[$COUNTER]}"
 
     ansible-playbook create-ebs-volume.yml -vv --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local device_name=/dev/sd$chr"
