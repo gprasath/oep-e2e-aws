@@ -42,16 +42,23 @@ sed 's|region: eu-west-2|region: us-west-2|' -i ./vars.yml
 sed 's|zone: eu-west-2a|zone: us-west-2a|' -i ./vars.yml
 sed 's|volume_size: 50|volume_size: 20|' -i ./vars.yml
 clustername=$(cat ~/.kube/$CLUSTER)
-chars=( {f..p} )
-cat vars.yml
-NEWNUMBEROFVOLUMES=NUMBEROFVOLUMES+1
+#chars=( {f..p} )
+#cat vars.yml
+# NEWNUMBEROFVOLUMES=NUMBEROFVOLUMES+1
 
-while [  $COUNTER -lt "$NEWNUMBEROFVOLUMES" ]; do
-    chr="${chars[$COUNTER]}"
+# while [  $COUNTER -lt "$NEWNUMBEROFVOLUMES" ]; do
+#     chr="${chars[$COUNTER]}"
 
-    ansible-playbook create-ebs-volume.yml -vv --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local device_name=/dev/sd$chr"
-    let COUNTER=COUNTER+1
-done
+#     ansible-playbook create-ebs-volume.yml -vv --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local device_name=/dev/sd$chr"
+#     let COUNTER=COUNTER+1
+
+sed -i 's/device_name: \/dev\/xvdb/device_name: \/dev\/xvdc/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
+
+sed -i 's/device_name: \/dev\/xvdc/device_name: \/dev\/xvdd/g' vars.yml
+
+ansible-playbook create-ebs-volume.yml --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local" -vv
 
 kubectl get disks
 
