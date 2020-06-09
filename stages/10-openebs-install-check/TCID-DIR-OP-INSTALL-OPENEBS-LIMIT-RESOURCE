@@ -10,6 +10,7 @@ path=$(pwd)
 # Copy kubeconfig
 mkdir -p ~/.kube
 cp  $path/.awscluster3/config ~/.kube/config
+cp .kube/$CLUSTER ~/.kube/$CLUSTER
 
 ####################################
 ##  Sequencing and Running test   ##
@@ -25,6 +26,40 @@ echo "********** Check Filesystem state **********"
     echo "******* BD is not present *******"
 }
 
+## volumes
+COUNTER=0
+echo '#### AWS CONFIG ####'
+mkdir -p ~/.aws
+cp $AWS_CREDS ~/.aws/credentials
+sed 's|region = eu-central-1|region = us-west-2|' -i ~/.aws/config
+
+kubectl get disks
+
+git clone https://github.com/mayadata-io/litmus.git
+cd litmus/k8s/aws/ebs-volumes
+
+sed 's|region: eu-west-2|region: us-west-2|' -i ./vars.yml
+sed 's|zone: eu-west-2a|zone: us-west-2a|' -i ./vars.yml
+sed 's|volume_size: 50|volume_size: 20|' -i ./vars.yml
+clustername=$(cat ~/.kube/$CLUSTER)
+chars=( {f..p} )
+
+while [  $COUNTER -lt "$NUMBEROFVOLUMES" ]; do
+    chr="${chars[$COUNTER]}"
+
+    ansible-playbook create-ebs-volume.yml -vv --extra-vars "cluster_name=nodes.k8s-$clustername.k8s.local device_name=/dev/sd$chr"
+    let COUNTER=COUNTER+1
+done
+
+kubectl get disks
+
+sleep 30
+aws s3 cp /tmp/aws/volume-id s3://k8s-bucket-$clustername
+sleep 30
+
+kubectl get bd -n openebs -ojsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.labels.kubernetes\.io/hostname}{"\t"}{.status}{"\t"}{.spec.filesystem}{"\t"}{"\n"}{end}'
+
+cd ../../../..
 # Cloning oep-e2e repository which contains all the test scripts
 git clone https://$username:$password@github.com/mayadata-io/oep-e2e.git
 

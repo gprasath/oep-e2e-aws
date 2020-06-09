@@ -174,15 +174,15 @@ ebs-volume-create-cluster2:
     CLUSTER: cluster2
     NUMBEROFVOLUMES: 3
 
-ebs-volume-create-cluster3:
-  image: mayadataio/tools:gitlab-job-v6
-  stage: CLUSTER-CONNECT
-  script:
-    - chmod 755 ./stages/17-ebs-volume/create
-    - ./stages/17-ebs-volume/create
-  variables:
-    CLUSTER: cluster3
-    NUMBEROFVOLUMES: 9
+# ebs-volume-create-cluster3:
+#   image: mayadataio/tools:gitlab-job-v6
+#   stage: CLUSTER-CONNECT
+#   script:
+#     - chmod 755 ./stages/17-ebs-volume/create
+#     - ./stages/17-ebs-volume/create
+#   variables:
+#     CLUSTER: cluster3
+#     NUMBEROFVOLUMES: 9
 
 ## DIRECTOR-GUI-CHECK
 .gui_test_template:
@@ -488,6 +488,9 @@ TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE:
   script: 
     - chmod 755 ./stages/10-openebs-install-check/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
     - ./stages/10-openebs-install-check/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
+  variables:
+    CLUSTER: cluster3
+    NUMBEROFVOLUMES: 9
 
 TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
   image: mayadataio/tools:gitlab-job-v6
