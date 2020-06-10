@@ -23,7 +23,7 @@ mkdir -p ~/.aws
 cp $AWS_CREDS ~/.aws/credentials
 sed 's|region = eu-central-1|region = us-west-2|' -i ~/.aws/config
 
-kubectl get disks
+##kubectl get disks
 
 git clone https://github.com/mayadata-io/litmus.git
 cd litmus/k8s/aws/ebs-volumes
@@ -41,7 +41,7 @@ while [  $COUNTER -lt "$NUMBEROFVOLUMES" ]; do
     let COUNTER=COUNTER+1
 done
 
-kubectl get disks
+##kubectl get disks
 
 sleep 30
 aws s3 cp /tmp/aws/volume-id s3://k8s-bucket-$clustername
