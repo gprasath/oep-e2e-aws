@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -x
 
 ######################
 ##   Prerequisites  ##
@@ -43,7 +43,7 @@ sed 's|zone: eu-west-2a|zone: us-west-2a|' -i ./vars.yml
 sed 's|volume_size: 50|volume_size: 20|' -i ./vars.yml
 clustername=$(cat ~/.kube/$CLUSTER)
 #chars=( {f..p} )
-#cat vars.yml
+cat vars.yml
 # NEWNUMBEROFVOLUMES=NUMBEROFVOLUMES+1
 
 # while [  $COUNTER -lt "$NEWNUMBEROFVOLUMES" ]; do
