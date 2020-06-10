@@ -49,5 +49,5 @@ kubectl create configmap config --from-literal=url=$url -n litmus
 # sed -i "${value_line_count}s/.*/          value: \"1\"/" $openebs_operator
 # # deploy openebs operator 
 # kubectl apply -f $openebs_operator
-sleep 100
-kubectl get pods -n openebs
+#sleep 100
+#kubectl get pods -n openebs
